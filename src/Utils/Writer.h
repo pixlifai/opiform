@@ -4,13 +4,23 @@
 #include <vector>
 #include <memory>
 
+#include <string>
+
 namespace opiform {
 
 	class Utils {
-	public:
-		static void writeAgents(const std::vector<class AgentBase*> & avecAgent, const char * apchFile, const char * apchDelim = "\t");
 
-		static void writeNetwork(const std::vector<class AgentBase*> & avecAgents, const char * apchFile);
+		static std::string s_strFolder;
+
+	public:
+
+		static void setFolder(const std::string & astrFolder);
+
+		static std::string getFolder();
+
+		static void writeAgents(const std::vector<class AgentBase*> & avecAgent, const std::string & astdFile, const char * apchDelim = "\t");
+
+		static void writeNetwork(const std::vector<class AgentBase*> & avecAgents, const std::string & astdFile);
 	};
 }
 

@@ -59,7 +59,6 @@ bool Game::init(const double & adbThresholdLevel, int anSize) {
 	m_vecAgents.reserve(anSize);
 
 	std::uniform_real_distribution<> dis;
-	std::uniform_real_distribution<double> ddis(0.35, 0.45);
 
 	for (int nI = 0; nI < anSize; ++nI) {
 		double dbValue = dis(gen);
@@ -78,7 +77,7 @@ bool Game::init(const double & adbThresholdLevel, int anSize) {
 
 #endif//0
 
-//	Utils::writeAgents(m_vecAgents, m_pchFile, "\t");
+//	Utils::writeAgents(m_vecAgents, Utils::getFolder() + m_pchFile, "\t");
 
 	return true;
 }
@@ -93,7 +92,7 @@ bool Game::initNetwork(const NetworkType & aNetworkType, NetworkAbstractParams *
 		return false;
 	
 	m_pNet->generateNetwork(&m_vecAgents);
-	Utils::writeNetwork(m_vecAgents, "Network.txt");
+	Utils::writeNetwork(m_vecAgents, Utils::getFolder() + "Network.txt");
 	m_pNet->setOpiformModel(apNetworkParams->m_OpinionFormationModelType);
 
 	return true;
@@ -113,7 +112,7 @@ void Game::runGame(const time_t & aTime) {
 	for (int nTime = 0; nTime < aTime; ++nTime) {
 		bool bRes = m_pNet->step();
 	}
-	Utils::writeAgents(m_vecAgents, m_pchFile);
+	Utils::writeAgents(m_vecAgents, Utils::getFolder() + m_pchFile);
 
 }
 

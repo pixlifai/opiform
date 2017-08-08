@@ -10,9 +10,19 @@
 using namespace std;
 using namespace opiform;
 
-void Utils::writeAgents(const std::vector<AgentBase*> & aT, const char * apchFile, const char * apchDelim) {
+string Utils::s_strFolder = ".\\";
+
+void Utils::setFolder(const std::string & astrFolder) {
+	s_strFolder = astrFolder;
+}
+
+std::string Utils::getFolder() {
+	return s_strFolder;
+}
+
+void Utils::writeAgents(const std::vector<AgentBase*> & aT, const string & astdFile, const char * apchDelim) {
 	std::ofstream out;
-	out.open(apchFile, std::ios_base::app);
+	out.open(astdFile, std::ios_base::app);
 
 	for (int nI = 0; nI < aT.size(); ++nI) {
 		const AgentBase * pAgent = aT[nI];
@@ -29,9 +39,9 @@ void Utils::writeAgents(const std::vector<AgentBase*> & aT, const char * apchFil
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void Utils::writeNetwork(const std::vector<AgentBase*> & avecAgents, const char * apchFile) {
+void Utils::writeNetwork(const std::vector<AgentBase*> & avecAgents, const string & astdFile) {
 	std::ofstream out;
-	out.open(apchFile);
+	out.open(astdFile);
 
 	out << "Agent and agent's connections\n";
 	for (int nI = 0; nI < avecAgents.size(); ++nI) {

@@ -1,6 +1,7 @@
-﻿#include <fstream>
-#include <sstream>
-#include <string>
+﻿#include <string>
+#include <iostream>
+
+#include "../Utils/Writer.h"
 
 #include "../Network/NetworkAbstract.h"
 
@@ -9,50 +10,27 @@
 using namespace std;
 using namespace opiform;
 
-int readData() {
-	ifstream in;
-	in.open("C:/Projekti/Matjaz/CompEcon/results_0.txt");
-
-	string str;
-	int nI = 0;
-	while (in.eof() == false) {
-		while (std::getline(in, str)) {
-
-			ofstream out;
-			out.open("C:/Projekti/Matjaz/CompEcon/res_" + std::to_string(nI) + ".txt");
-			out << str;
-			out.close();
-			++nI;
-		}
-	}
-
-	return 0;
-}
-
 int main(int argc, char * argv[]) {
-	if (argc != 3) {
+	std::cout << "Usage:\n "
+		<< argv[0] << " <path/to/output/result/folder/>"
+		<< argv[0];
 
+	if (argc == 2) {
+		Utils::setFolder(argv[1]);
 	}
 
-#if 0
-	readData();
+	const int nAgents = 10000;
+	const time_t tIterations = 500000;
+	const int nRepetitions = 50;
 
-#else
-	int nAgents = 10000;
-	time_t tIterations = 10000000;
-
-	int nTreshold =
-		100;
-//		atoi(argv[1]);
-	int nEnd =
-		100;
-//		atoi(argv[2]);
+	int nTreshold = 100;
+	int nEnd = 100;
 
 	Game::registerStatics();
 
 	while (nTreshold <= nEnd)	{
-		for (int nI = 0; nI < 1; ++nI) {
-			string strName = "C:/temp/results_" + to_string(nTreshold) + ".txt";
+		for (int nI = 0; nI < nRepetitions; ++nI) {
+			string strName = "results_" + to_string(nTreshold) + ".txt";
 			Game game(strName.c_str());
 			if (game.init((double)nTreshold/100, nAgents) == false)
 				continue;
@@ -71,6 +49,6 @@ int main(int argc, char * argv[]) {
 		}
 		nTreshold += 1;
 	}
-#endif
+
 	return 0;
 }
