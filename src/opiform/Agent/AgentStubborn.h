@@ -10,13 +10,15 @@ namespace opiform {
 		AgentStubborn(
 			const DecisionMaking::DecisionMakingType & aDMType = DecisionMaking::DecisionMakingType::LinearSpread, 
 			const double & adbOpinion = 0.0);
-//		AgentStubborn(const AgentStubborn & rhs);
+		AgentStubborn(const AgentStubborn & rhs);
 
 		virtual ~AgentStubborn();
-//		AgentStubborn & operator=(const AgentStubborn & rhs);
+		AgentStubborn & operator=(const AgentStubborn & rhs);
 
 		virtual void setThreshold(const double & ) { }
-		virtual bool shouldUpdate(const double & adbOpinionAdjacent) override;
+		virtual bool shouldUpdate(const double & adbOpinionAdjacent);
+
+		virtual double getOpinion() const { return m_dbOpinion; }
 	};
 }
 

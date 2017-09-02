@@ -2,7 +2,6 @@
 #define WRITER_H
 
 #include <vector>
-#include <memory>
 
 #include <string>
 

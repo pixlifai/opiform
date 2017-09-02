@@ -33,6 +33,7 @@ AgentBase::AgentBase(const AgentBase& rhs) {
 	this->m_Type = rhs.m_Type;
 	this->m_DecisionMakingType = rhs.m_DecisionMakingType;
 	this->m_dbInitialOpinion = rhs.m_dbInitialOpinion;
+	this->m_vecNeighborhood = rhs.m_vecNeighborhood;
 }
 
 //------------------------------------------------------------------------------------
@@ -48,6 +49,7 @@ AgentBase & AgentBase::operator = (const AgentBase& rhs) {
 	this->m_Type = rhs.m_Type;
 	this->m_DecisionMakingType = rhs.m_DecisionMakingType;
 	this->m_dbInitialOpinion = rhs.m_dbInitialOpinion;
+	this->m_vecNeighborhood = rhs.m_vecNeighborhood;
 
 	return *this;
 }

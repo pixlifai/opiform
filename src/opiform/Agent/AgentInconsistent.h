@@ -21,6 +21,9 @@ namespace opiform {
 		AgentInconsistent & operator=(const AgentInconsistent& rhs);
 
 		virtual double getOpinion() const;
+
+		virtual void setThreshold(const double &);
+		virtual bool shouldUpdate(const double & adbOpinionAdjacent);
 	};
 }
 

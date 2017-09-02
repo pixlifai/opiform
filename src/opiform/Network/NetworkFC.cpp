@@ -47,7 +47,7 @@ bool NetworkFC::step() {
 		double dbOpinionAgent = pAgent->getOpinion();
 		double dbOpinionAdjacent = pAgentAdjacent->getOpinion();
 
-		double dbMu = 0.3;
+		double dbMu = 0.2;
 
 		if (pAgent->shouldUpdate(dbOpinionAdjacent))
 			pAgent->setOpinion(dbOpinionAgent + dbMu*(dbOpinionAdjacent - dbOpinionAgent));

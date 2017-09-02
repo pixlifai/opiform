@@ -1,6 +1,8 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
-PROJECT(opiform)
+PROJECT(OpinionFormation)
+
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 SET(CMAKE_DEBUG_POSTFIX "D")
 
@@ -15,24 +17,9 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/../install CACHE STRING
 set(PROJECT_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
 
 
-SET ( src
-	Utils/Writer.h Utils/Writer.cpp
-	Utils/OpinionFormationModels.h Utils/OpinionFormationModels.cpp
-	Utils/DecisionMaking.h Utils/DecisionMaking.cpp
-	Agent/AgentBase.h Agent/AgentBase.cpp
-	Agent/AgentStubborn.h Agent/AgentStubborn.cpp
-	Agent/AgentInconsistent.h Agent/AgentInconsistent.cpp
-	Network/NetworkAbstract.h Network/NetworkAbstract.cpp
-	Network/NetworkBA.h Network/NetworkBA.cpp
-	Network/NetworkER.h Network/NetworkER.cpp
-	Network/NetworkFC.h Network/NetworkFC.cpp
-	Network/NetworkSW.h Network/NetworkSW.cpp
-	Network/NetworkCM.h Network/NetworkCM.cpp
-	Game/Game.h Game/Game.cpp
+FILE(GLOB_RECURSE files RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}/opiform"
+    "${CMAKE_CURRENT_SOURCE_DIR}/opiform/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/opiform/*.cpp"
 )
-
-FILE(GLOB_RECURSE files RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
-    "${CMAKE_CURRENT_SOURCE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
 foreach(FILE ${files}) 
   get_filename_component(PARENT_DIR "${FILE}" PATH)
@@ -48,10 +35,10 @@ foreach(FILE ${files})
     set(GROUP "Header Files\\${GROUP}")
   endif()
 
-  source_group("${GROUP}" FILES "${FILE}")
+  source_group(${GROUP} FILES ${FILE})
 endforeach()
 
-ADD_EXECUTABLE(AgentBased
-	${src}
-	Main/main.cpp
-)
+
+add_subdirectory(opiform)
+add_subdirectory(tests)
+add_subdirectory(demo)

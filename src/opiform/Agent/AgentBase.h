@@ -3,7 +3,6 @@
 
 #include <ostream>
 #include <vector>
-#include <queue>
 
 #include "../Utils/DecisionMaking.h"
 
@@ -11,7 +10,6 @@ namespace opiform {
 
 	typedef enum {
 		Regular = 0,
-		Malicious,
 		Inconsistent,
 		Stubborn
 	} AgentType;

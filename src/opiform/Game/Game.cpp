@@ -69,13 +69,20 @@ bool Game::init(const double & adbThresholdLevel, int anSize) {
 
 #if 0
 	//Add stubborn agents
-	for (int nI = 0; nI < 20; ++nI) {
+	for (int nI = 0; nI < 500; ++nI) {
 		double dbValue = 0.0;
-		AgentStubborn * pA = new AgentStubborn(DecisionMaking::DecisionMakingType::LinearSpread, dbValue);
+		AgentInconsistent * pA = new AgentInconsistent(DecisionMaking::DecisionMakingType::LinearSpread, dbValue);
 		m_vecAgents.push_back(pA);
 	}
-
 #endif//0
+
+#if 1
+	for (int nI = 0; nI < 500; ++nI) {
+		double dbValue = 0.0;
+		AgentStubborn * pS = new AgentStubborn(DecisionMaking::DecisionMakingType::LinearSpread, dbValue);
+		m_vecAgents.push_back(pS);
+	}
+#endif //
 
 //	Utils::writeAgents(m_vecAgents, Utils::getFolder() + m_pchFile, "\t");
 
@@ -111,7 +118,12 @@ void Game::runGame(const time_t & aTime) {
 	//Run the process
 	for (int nTime = 0; nTime < aTime; ++nTime) {
 		bool bRes = m_pNet->step();
+
+		//Comment out to record all iteration-results
+//		Utils::writeAgents(m_vecAgents, Utils::getFolder() + m_pchFile);
 	}
+
+	//Comment-out for registering last iteration results
 	Utils::writeAgents(m_vecAgents, Utils::getFolder() + m_pchFile);
 
 }
