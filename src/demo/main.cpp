@@ -33,12 +33,12 @@ int main(int argc, char * argv[]) {
 	if (argc == 2)
 		Utils::setFolder(argv[1]);
 
-	const int nAgents = 100;
-	const time_t tIterations = 5;
-	const int nRepetitions = 50;
+	const int nAgents = 10000;
+	const time_t tIterations = 5000;
+	const int nRepetitions = 1;
 
-	int nTreshold = 0;
-	int nEnd = 1;
+	int nTreshold = 47;
+	int nEnd = 47;
 
 	Game::registerStatics();
 

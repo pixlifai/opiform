@@ -22,6 +22,5 @@ INSTALL(TARGETS opiform
 
 SET_PROPERTY(TARGET opiform PROPERTY FOLDER "Library")
 
-FILE(GLOB_RECURSE files_hierarchy "${CMAKE_SOURCE_DIR}/opiform/*.h" "${CMAKE_SOURCE_DIR}/opiform/*.cpp")
-
+set(files_hierarchy ${hdrs} ${srcs})
 organize_project_hierarchy(${files_hierarchy})
