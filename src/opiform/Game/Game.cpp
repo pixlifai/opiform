@@ -67,7 +67,7 @@ bool Game::init(const double & adbThresholdLevel, int anSize) {
 		m_vecAgents.push_back(pA);
 	}
 
-#if 1
+#if 0
 	//Add stubborn agents
 	for (int nI = 0; nI < 500; ++nI) {
 		double dbValue = 0.0;
@@ -76,7 +76,7 @@ bool Game::init(const double & adbThresholdLevel, int anSize) {
 	}
 #endif//0
 
-#if 1
+#if 0
 	for (int nI = 0; nI < 500; ++nI) {
 		double dbValue = 1.0;
 		AgentStubborn * pS = new AgentStubborn(DecisionMaking::DecisionMakingType::LinearSpread, dbValue);

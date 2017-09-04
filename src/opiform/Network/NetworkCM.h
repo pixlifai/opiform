@@ -3,8 +3,6 @@
 
 #include "NetworkAbstract.h"
 
-#include <vector>
-
 namespace opiform {
 
 	class NetworkCM : public NetworkAbstract {

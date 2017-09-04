@@ -1,8 +1,9 @@
-﻿#include <string>
-#include <iostream>
-#include <fstream>
+﻿/*
+	This section contains some ad-hoc procedures
+*/
 
-#include "Utils/Writer.h"
+#include <string>
+#include <fstream>
 
 #include "Network/NetworkAbstract.h"
 
@@ -14,18 +15,17 @@ using namespace opiform;
 #include <map>
 #include <sstream>
 #include <algorithm>
-#include <list>
 
 int testAppearance(int argc, char * argv[]) {
 
 	std::ofstream out;
-	out.open("C:/temp/FC/FCConv.txt");
+	out.open("FCConv.txt");
 
 	const int c_intAdjFactor = pow(10, 5);
 
 	for (int nI = 0; nI <= 50; ++nI) {
 		std::ifstream in;
-		in.open("C:/temp/FC/results_" + to_string(nI) + ".txt");
+		in.open("results_" + to_string(nI) + ".txt");
 		if (in.is_open() == false)
 			continue;
 
@@ -89,11 +89,11 @@ int testConvergence(int argc, char * argv[]) {
 
 	vector<int> nvecRes;
 	std::ofstream out;
-	out.open("C:/temp/FC/res.txt");
+	out.open("res.txt");
 
 	for (int nI = 0; nI <= 50; ++nI) {
 		std::ifstream in;
-		in.open("C:/temp/FC/results_" + to_string(nI) + ".txt");
+		in.open("results_" + to_string(nI) + ".txt");
 		if (in.is_open() == false)
 			continue;
 

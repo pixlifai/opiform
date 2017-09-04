@@ -39,7 +39,7 @@ void NetworkSW::generateNetwork(vector<AgentBase*> * apvecAgents)	{
 			if (nID < 0)
 				nID += nSize;
 
-			if (nID >= nSize)
+			else if (nID >= nSize)
 				nID -= nSize;
 
 			AgentBase * pAgentAdj = (*apvecAgents)[nID];

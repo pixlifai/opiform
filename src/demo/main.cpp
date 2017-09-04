@@ -1,6 +1,4 @@
 ﻿#include <string>
-#include <iostream>
-#include <fstream>
 
 #include "Utils/Writer.h"
 
@@ -34,8 +32,8 @@ int main(int argc, char * argv[]) {
 		Utils::setFolder(argv[1]);
 
 	const int nAgents = 10000;
-	const time_t tIterations = 5000;
-	const int nRepetitions = 1;
+	const time_t tIterations = 50000;
+	const int nRepetitions = 50;
 
 	int nTreshold = 47;
 	int nEnd = 47;
