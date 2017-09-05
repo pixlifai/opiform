@@ -29,10 +29,7 @@ int main(int argc, char * argv[]) {
 	*/
 
 	if (argc == 2)
-		Utils::setFolder(
-		//argv[1]
-		"testing.txt"
-		);
+		Utils::setFolder(argv[1]);
 
 	const int nAgents = 100;
 	const time_t tIterations = 2;
