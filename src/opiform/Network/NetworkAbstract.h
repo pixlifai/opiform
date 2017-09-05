@@ -28,9 +28,7 @@ namespace opiform {
 	class NetworkAbstract {
 	public:
 		NetworkAbstract() {}
-		virtual ~NetworkAbstract() = 0 {
-			int nIndy = -1;
-		}
+		virtual ~NetworkAbstract() = 0;
 
 		virtual NetworkType getNetworkType() const = 0;
 

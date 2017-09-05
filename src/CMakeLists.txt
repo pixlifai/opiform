@@ -6,6 +6,10 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
 SET(CMAKE_DEBUG_POSTFIX "D")
 
+IF(UNIX)
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+ENDIF(UNIX)
+
 # Warn in the case of in-source build
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_BINARY_DIR}")
   message(WARNING "The source directory is the same as binary directory.")

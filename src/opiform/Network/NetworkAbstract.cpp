@@ -23,6 +23,10 @@ namespace {
 }
 
 
+NetworkAbstract::~NetworkAbstract()	{
+	int nIndy = -1;
+}
+
 unique_ptr< NetworkAbstract> NetworkAbstract::findAndCreateNetwork(const NetworkType & aType, NetworkAbstractParams * apNetworkParams) {
 
 	std::unique_ptr<NetworkAbstract> pNet = 0;
