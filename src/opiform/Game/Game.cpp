@@ -102,6 +102,8 @@ bool Game::initNetwork(const NetworkType & aNetworkType, NetworkAbstractParams *
 	Utils::writeNetwork(m_vecAgents, Utils::getFolder() + "Network.txt");
 	m_pNet->setOpiformModel(apNetworkParams->m_OpinionFormationModelType);
 
+	bool bRes = m_pNet->isConnected(&m_vecAgents);
+
 	return true;
 }
 
@@ -117,7 +119,7 @@ void Game::runGame(const time_t & aTime) {
 
 	//Run the process
 	for (int nTime = 0; nTime < aTime; ++nTime) {
-		bool bRes = m_pNet->step();
+		bool bRes = m_pNet->step(&this->m_vecAgents);
 
 		//Comment out to record all iteration-results
 		Utils::writeAgents(m_vecAgents, Utils::getFolder() + m_pchFile);

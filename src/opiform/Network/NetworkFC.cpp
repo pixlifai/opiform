@@ -20,25 +20,24 @@ NetworkFC::~NetworkFC() {}
 
 
 void NetworkFC::generateNetwork(std::vector<AgentBase *> * apvecAgents)	{
-	m_pvecAgents = apvecAgents;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 
-bool NetworkFC::step() {
+bool NetworkFC::step(std::vector<AgentBase *> * apvecAgents) {
 
-	int nSize = m_pvecAgents->size();
+	int nSize = apvecAgents->size();
 
 	//Iterate through agents
 	for (int nI = 0; nI < nSize; ++nI) {
 
-		AgentBase* pAgent = (*m_pvecAgents)[nI];
+		AgentBase* pAgent = (*apvecAgents)[nI];
 		AgentBase* pAgentAdjacent = nullptr;
 
-		std::uniform_int_distribution<> dis(0, m_pvecAgents->size()-1);
+		std::uniform_int_distribution<> dis(0, apvecAgents->size()-1);
 		int nID = dis(gen);
 
-		pAgentAdjacent = (*m_pvecAgents)[nID];
+		pAgentAdjacent = (*apvecAgents)[nID];
 
 		if (pAgentAdjacent == nullptr)
 			continue;

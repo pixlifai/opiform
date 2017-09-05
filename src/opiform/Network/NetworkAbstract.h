@@ -38,11 +38,12 @@ namespace opiform {
 
 		static std::unique_ptr<NetworkAbstract> findAndCreateNetwork(const NetworkType & aNetworkType, NetworkAbstractParams * apNetworkParams = 0);
 
-		virtual bool step() = 0;
+		virtual bool step(std::vector<AgentBase *> * apvecAgents) = 0;
 		void setOpiformModel(const OpinionFormationModel::OpinionFormationModelType & aType);
 
+		virtual bool isConnected(const std::vector<AgentBase*> * apvecAgents);
+
 	protected:
-		std::vector<AgentBase*> * m_pvecAgents;
 		OpinionFormationModel::OpinionFormationModelFunc * m_OpiformModel;
 	};
 }

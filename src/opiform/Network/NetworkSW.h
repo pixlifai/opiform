@@ -13,7 +13,9 @@ namespace opiform {
 		virtual NetworkType getNetworkType() const { return NetworkType::SW; };
 
 		virtual void generateNetwork(std::vector<AgentBase *> * apvecAgents);
-		virtual bool step();
+		virtual bool step(std::vector<AgentBase *> * apvecAgents);
+		virtual bool isConnected(const std::vector<AgentBase*> * apvecAgents) { return true; };
+
 
 	private:
 		void networkRewiring(std::vector<AgentBase *> * apvecAgents, const double & adbProb);

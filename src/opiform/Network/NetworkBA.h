@@ -20,7 +20,7 @@ namespace opiform {
 
 		virtual void generateNetwork(std::vector<AgentBase*> * apvecAgents);
 
-		virtual bool step();
+		virtual bool step(std::vector<AgentBase *> * apvecAgents);
 
 	private:
 		int m_nConnectedNodes;

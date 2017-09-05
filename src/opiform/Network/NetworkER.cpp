@@ -20,7 +20,6 @@ NetworkER::~NetworkER() {}
 
 void NetworkER::generateNetwork(std::vector<AgentBase*> * apvecAgents)	{
 
-	m_pvecAgents = apvecAgents;
 	int nSize = apvecAgents->size();
 
 	double dbC = 1.5;
@@ -46,14 +45,14 @@ void NetworkER::generateNetwork(std::vector<AgentBase*> * apvecAgents)	{
 
 //---------------------------------------------------------------------------------------------------------------------
 
-bool NetworkER::step() {
+bool NetworkER::step(std::vector<AgentBase *> * apvecAgents) {
 
-	int nSize = m_pvecAgents->size();
+	int nSize = apvecAgents->size();
 
 	//Iterate through agents
 	for (int nI = 0; nI < nSize; ++nI) {
 
-		AgentBase * pAgent = (*m_pvecAgents)[nI];
+		AgentBase * pAgent = (*apvecAgents)[nI];
 		int nRes = (*m_OpiformModel)(pAgent);
 
 	}

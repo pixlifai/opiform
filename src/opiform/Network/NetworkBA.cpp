@@ -31,8 +31,6 @@ NetworkBA::~NetworkBA() {}
 void NetworkBA::generateNetwork(std::vector<AgentBase *> * apvecAgents)	{
 	gen.seed(10);
 
-	m_pvecAgents = apvecAgents;
-
 	int nSize = apvecAgents->size();
 
 	//Track the degree of each node
@@ -97,14 +95,14 @@ void NetworkBA::generateNetwork(std::vector<AgentBase *> * apvecAgents)	{
 
 //---------------------------------------------------------------------------------------------------------------------
 
-bool NetworkBA::step() {
+bool NetworkBA::step(std::vector<AgentBase *> * apvecAgents) {
 
-	int nSize = m_pvecAgents->size();
+	int nSize = apvecAgents->size();
 
 	//Iterate through agents
 	for (int nI = 0; nI < nSize; ++nI) {
 
-		AgentBase* pAgent = (*m_pvecAgents)[nI];
+		AgentBase* pAgent = (*apvecAgents)[nI];
 		int nRes = (*m_OpiformModel)(pAgent);
 	}
 

@@ -25,7 +25,6 @@ NetworkSW::~NetworkSW() {
 void NetworkSW::generateNetwork(vector<AgentBase*> * apvecAgents)	{
 	gen.seed(10);
 
-	m_pvecAgents = apvecAgents;
 	int nSize = apvecAgents->size();
 
 	for (int nI = 0; nI< nSize; ++nI) {
@@ -89,14 +88,14 @@ void NetworkSW::networkRewiring(std::vector<AgentBase *> * apvecAgents, const do
 
 //---------------------------------------------------------------------------------------------------------------------
 
-bool NetworkSW::step() {
+bool NetworkSW::step(std::vector<AgentBase *> * apvecAgents) {
 
-	int nSize = m_pvecAgents->size();
+	int nSize = apvecAgents->size();
 
 	//Iterate through agents
 	for (int nI = 0; nI < nSize; ++nI) {
 
-		AgentBase* pAgent = (*m_pvecAgents)[nI];
+		AgentBase* pAgent = (*apvecAgents)[nI];
 		int nRes = (*m_OpiformModel)(pAgent);
 
 	}

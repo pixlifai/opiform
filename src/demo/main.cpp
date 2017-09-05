@@ -29,11 +29,14 @@ int main(int argc, char * argv[]) {
 	*/
 
 	if (argc == 2)
-		Utils::setFolder(argv[1]);
+		Utils::setFolder(
+		//argv[1]
+		"testing.txt"
+		);
 
-	const int nAgents = 10000;
-	const time_t tIterations = 50000;
-	const int nRepetitions = 50;
+	const int nAgents = 100;
+	const time_t tIterations = 2;
+	const int nRepetitions = 2;
 
 	int nTreshold = 47;
 	int nEnd = 47;
@@ -53,7 +56,7 @@ int main(int argc, char * argv[]) {
 			np.m_nConnectedNodes = 10;
 			np.m_nNeighbors = 10;
 			np.m_OpinionFormationModelType = OpinionFormationModel::DW;
-			NetworkType netType = NetworkType::FC;
+			NetworkType netType = NetworkType::BA;
 
 			if (game.initNetwork(netType, &np) == false)
 				continue;

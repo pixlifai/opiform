@@ -26,8 +26,6 @@ NetworkCM::~NetworkCM() {
 void NetworkCM::generateNetwork(vector<AgentBase *> * apvecAgents)	{
 
 	int nSize = apvecAgents->size();
-	m_pvecAgents = apvecAgents;
-
 
 	vector<int> nvecIDs(nSize);
 	for (int nI = 0; nI < nSize; ++nI)
@@ -88,14 +86,14 @@ void NetworkCM::generateNetwork(vector<AgentBase *> * apvecAgents)	{
 
 //---------------------------------------------------------------------------------------------------------------------
 
-bool NetworkCM::step() {
+bool NetworkCM::step(std::vector<AgentBase *> * apvecAgents) {
 
-	int nSize = m_pvecAgents->size();
+	int nSize = apvecAgents->size();
 
 	//Iterate through agents
 	for (int nI = 0; nI < nSize; ++nI) {
 
-		AgentBase * pAgent = (*m_pvecAgents)[nI];
+		AgentBase * pAgent = (*apvecAgents)[nI];
 		int nRes = (*m_OpiformModel)(pAgent);
 
 	}
