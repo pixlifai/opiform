@@ -9,12 +9,15 @@
 
 #include "Game/Game.h"
 
-using namespace std;
-using namespace opiform;
-
 #include <map>
 #include <sstream>
 #include <algorithm>
+
+#include <string.h>
+
+using namespace std;
+using namespace opiform;
+
 
 int testAppearance(int argc, char * argv[]) {
 
@@ -22,6 +25,8 @@ int testAppearance(int argc, char * argv[]) {
 	out.open("FCConv.txt");
 
 	const int c_intAdjFactor = pow(10, 5);
+
+	char chDelim[] = " \t";
 
 	for (int nI = 0; nI <= 50; ++nI) {
 		std::ifstream in;
@@ -36,15 +41,15 @@ int testAppearance(int argc, char * argv[]) {
 				std::map<double, int> mapOpinions;
 				double dbOpinion;
 
-				char * pchData = &str[0];
+				char * pchData;
 				char * pch;
 
-				pch = strtok(pchData, "\t");
+				pch = strtok_s(&str[0], chDelim, &pchData);
 				while (pch != NULL)	{
-					dbOpinion = stof(pch);
+					dbOpinion = stod(pch);
 					dbOpinion = floor(dbOpinion*c_intAdjFactor + 0.5) / c_intAdjFactor;
 					++mapOpinions[dbOpinion];
-					pch = strtok(NULL, "\t");
+					pch = strtok_s(NULL, chDelim, &pchData);
 				}
 
 				int nSize = (mapOpinions.size() > 3) ? mapOpinions.size() : 3;
@@ -55,7 +60,7 @@ int testAppearance(int argc, char * argv[]) {
 				int nI;
 				for (cit, nI = 0; cit != mapOpinions.cend(); ++cit, ++nI)
 					lst[nI] = *cit;
-				sort(lst.begin(), lst.end(), [](
+				std::sort(lst.begin(), lst.end(), [](
 					std::pair<double, int> a, std::pair<double, int> b)-> bool {
 				
 					return a.second > b.second;
@@ -91,6 +96,8 @@ int testConvergence(int argc, char * argv[]) {
 	std::ofstream out;
 	out.open("res.txt");
 
+	char chDelim[] = " \t";
+
 	for (int nI = 0; nI <= 50; ++nI) {
 		std::ifstream in;
 		in.open("results_" + to_string(nI) + ".txt");
@@ -104,20 +111,20 @@ int testConvergence(int argc, char * argv[]) {
 			int nUniform = 0;
 			while (getline(in, str)) {
 				++nLines;
-				char * pchData = &str[0];
+				char * pchData;
 				char * pch;
 
 				bool bTrue = true;
 
-				pch = strtok(pchData, "\t");
+				pch = strtok_s(&str[0], chDelim, &pchData);
 				double dbOpinion = stof(pch);
 				while (pch != NULL)	{
-					double dbT = stof(pch);
+					double dbT = stod(pch);
 					if (abs(dbT - dbOpinion) > 0.000001) {
 						bTrue = false;
 						break;
 					}
-					pch = strtok(NULL, "\t");
+					pch = strtok_s(NULL, chDelim, &pchData);
 				}
 
 				if (bTrue) {
