@@ -13,6 +13,7 @@
 using namespace opiform;
 using namespace std;
 
+/*
 #if __cpp_lib_make_unique >= 201304
 // note: this implementation does not disable this overload for array types
 template<typename T, typename... Args>
@@ -21,7 +22,7 @@ std::unique_ptr<T> make_unique(Args&&... args)
 	return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 #endif
-
+*/
 namespace {
 	std::random_device rd;
 

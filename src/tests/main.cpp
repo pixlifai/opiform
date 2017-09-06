@@ -13,10 +13,16 @@
 #include <sstream>
 #include <algorithm>
 
+#include <iostream>
+
 #include <string.h>
 
 using namespace std;
 using namespace opiform;
+
+#if defined __linux__
+#define strtok_s(a,b,c) strtok_r(a,b,c)
+#endif
 
 
 int testAppearance(int argc, char * argv[]) {
@@ -49,6 +55,7 @@ int testAppearance(int argc, char * argv[]) {
 					dbOpinion = stod(pch);
 					dbOpinion = floor(dbOpinion*c_intAdjFactor + 0.5) / c_intAdjFactor;
 					++mapOpinions[dbOpinion];
+					cout << dbOpinion << "\n";
 					pch = strtok_s(NULL, chDelim, &pchData);
 				}
 
