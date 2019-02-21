@@ -2,27 +2,20 @@
 #include <queue>
 #include <random>
 
+#include "../Agent/AgentBase.h"
+
 #include "NetworkFC.h"
 #include "NetworkBA.h"
 #include "NetworkER.h"
 #include "NetworkSW.h"
 #include "NetworkCM.h"
+#include "NetworkSWAge.h"
 
 #include "NetworkAbstract.h"
 
 using namespace opiform;
 using namespace std;
 
-/*
-#if __cpp_lib_make_unique >= 201304
-// note: this implementation does not disable this overload for array types
-template<typename T, typename... Args>
-std::unique_ptr<T> make_unique(Args&&... args)
-{
-	return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
-}
-#endif
-*/
 namespace {
 	std::random_device rd;
 
@@ -37,25 +30,28 @@ NetworkAbstract::~NetworkAbstract()	{
 	int nIndy = -1;
 }
 
-unique_ptr< NetworkAbstract> NetworkAbstract::findAndCreateNetwork(const NetworkType & aType, NetworkAbstractParams * apNetworkParams) {
+NetworkAbstract * NetworkAbstract::findAndCreateNetwork(const NetworkType & aType, NetworkAbstractParams * apNetworkParams) {
 
-	std::unique_ptr<NetworkAbstract> pNet = 0;
+	NetworkAbstract * pNet = 0;
 
 	switch (aType) {
 	case NetworkType::BA:
-		pNet = make_unique<NetworkBA>(apNetworkParams->m_nConnectedNodes);
+		pNet = new NetworkBA(apNetworkParams->m_nConnectedNodes);
 		break;
 	case NetworkType::ER:
-		pNet = make_unique<NetworkER>(apNetworkParams->m_dbConnectionProb);
+		pNet = new NetworkER(apNetworkParams->m_dbConnectionProb);
 		break;
 	case NetworkType::FC:
-		pNet = make_unique<NetworkFC>();
+		pNet = new NetworkFC();
 		break;
 	case NetworkType::SW:
-		pNet = make_unique<NetworkSW>(apNetworkParams->m_nNeighbors,apNetworkParams->m_dbRewiringProb);
+		pNet = new NetworkSW(apNetworkParams->m_nNeighbors,apNetworkParams->m_dbRewiringProb);
+		break;
+	case NetworkType::SWAge:
+		pNet = new NetworkSWAge(apNetworkParams->m_nNeighbors, apNetworkParams->m_dbRewiringProb);
 		break;
 	case NetworkType::CM:
-		pNet = make_unique<NetworkCM>(apNetworkParams->m_nNeighbors);
+		pNet = new NetworkCM(apNetworkParams->m_nNeighbors);
 		break;
 
 	default:
@@ -111,3 +107,43 @@ bool NetworkAbstract::isConnected(const std::vector<AgentBase*> * apvecAgents) {
 
 	return (nCount == nSize);
 }
+
+//-----------------------------------------------------------------------------------------------------
+
+bool NetworkAbstract::getEdgeList(const std::vector<AgentBase*> & avecAgents, std::vector<Edge> & avecEdgeList) {
+
+	for (AgentBase * pel : avecAgents) {
+		int nId = pel->getID();
+		int nSize = pel->getNeighborhoodSize();
+
+		for (int nI = 0; nI < nSize; ++nI) {
+			Edge e;
+			e.m_nSourceNode = nId;
+			e.m_nTargetNode = pel->getNeighbor(nI)->getID();
+			avecEdgeList.push_back(e);
+		}
+	}
+
+	return true;
+}
+
+//-----------------------------------------------------------------------------------------------------
+
+bool NetworkAbstract::getAdjacencyList(const vector<AgentBase*> & avecAgents, map<int, vector<int> > & amapAdjacencyList)	{
+	for (AgentBase * pel : avecAgents) {
+		int nId = pel->getID();
+		int nSize = pel->getNeighborhoodSize();
+
+		vector<int> vecT(nSize);
+
+		for (int nI = 0; nI < nSize; ++nI) {
+			vecT[nI] = pel->getNeighbor(nI)->getID();
+		}
+		amapAdjacencyList[pel->getID()] = vecT;
+	}
+
+	return true;
+}
+
+//------------------------------------------------------------------------------------------------------
+

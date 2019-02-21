@@ -2,6 +2,7 @@
 #define OPIFORM_OPINION_FORMATION_MODELS_H
 
 #include <map>
+#include <iostream>
 
 #include "../Agent/AgentBase.h"
 
@@ -9,11 +10,10 @@ namespace opiform {
 
 	class OpinionFormationModel {
 	public:
-		typedef int(*OpinionFormationModelFunc)(AgentBase * apAgent);
+		typedef int(*OpinionFormationModelFunc)(AgentBase * apAgent, const Opinion::OpinionTopic & aTopic);
 
 		enum OpinionFormationModelType {
-			DW = 0,			//The Deffuant-Weisbuch model
-			HK				//The Hegselmann-Krause model
+			DW = 0			//The Deffuant-Weisbuch model
 		};
 
 		typedef std::map<OpinionFormationModelType, OpinionFormationModelFunc> OpinionFormationModelFuncMap;
@@ -30,60 +30,37 @@ namespace opiform {
 
 		//------------------------------------------------------------------------------------------------
 
-		static inline int DWFunction(AgentBase* apAgent) {
+		static inline int DWFunction(AgentBase* apAgent, const Opinion::OpinionTopic & aTopic) {
 
-			AgentBase* pAgentAdjacent = nullptr;
-
-			pAgentAdjacent = apAgent->selectInteractingAgent();
+			//Select an interacting agent as to the topic
+			AgentBase * pAgentAdjacent = apAgent->selectInteractingAgent(aTopic);
 
 			if (pAgentAdjacent == nullptr)
 				return 0;
 
 			//Store opinions before a change
-			double dbOpinionAgent = apAgent->getOpinion();
-			double dbOpinionAdjacent = pAgentAdjacent->getOpinion();
+			Opinion::OpinionPosition opinionAgent = apAgent->getTopicPosition(aTopic);
+			Opinion::OpinionPosition opinionAdjacent = pAgentAdjacent->getTopicPosition(aTopic);
 
-			double dbMu = 0.2;
+			apAgent->updateAdjAgentProfile(pAgentAdjacent, aTopic, opinionAdjacent);
+			pAgentAdjacent->updateAdjAgentProfile(apAgent, aTopic, opinionAgent);
 
-			if (apAgent->shouldUpdate(dbOpinionAdjacent))
-				apAgent->setOpinion(dbOpinionAgent + dbMu*(dbOpinionAdjacent - dbOpinionAgent));
+			if (apAgent->shouldUpdate(aTopic, opinionAdjacent)) {
+				Opinion::OpinionPosition op = opinionAgent + apAgent->getMu()*(opinionAdjacent - opinionAgent);
+				apAgent->setOpinionTopicPosition(aTopic, op);
+			}
 
-			if (pAgentAdjacent->shouldUpdate(dbOpinionAgent))
-				pAgentAdjacent->setOpinion(dbOpinionAdjacent + dbMu*(dbOpinionAgent - dbOpinionAdjacent));
 
+#if 1
+			if (pAgentAdjacent->shouldUpdate(aTopic, opinionAgent)) {
+				Opinion::OpinionPosition op = opinionAdjacent + pAgentAdjacent->getMu()*(opinionAgent - opinionAdjacent);
+				pAgentAdjacent->setOpinionTopicPosition(aTopic, op);
+			}
+#endif
 			return 1;
 		}
 
 		//------------------------------------------------------------------------------------------------
-
-		static inline int HKFunction(AgentBase* apAgent)	{
-			//HEGSELMANN-KRAUSE MODEL
-			/*
-			https://arxiv.org/pdf/0707.1762.pdf
-			*/
-			double dbOpinion = 0.0;
-			int nCounter = 0;
-			for (int nI = 0; nI < apAgent->getNeighborhoodSize(); ++nI) {
-				double dbT = apAgent->getNeighbor(nI)->getOpinion();
-				if (abs(dbT - apAgent->getOpinion()) < apAgent->getThreshold()) {
-					dbOpinion += dbT;
-					++nCounter;
-				}
-			}
-
-			if (nCounter == 0)
-				return 0;
-			dbOpinion /= (double)nCounter;
-			double dbOpinionAgent = apAgent->getOpinion();
-
-			double dbMu = 0.3;
-
-			apAgent->setOpinion(dbOpinionAgent + dbMu*(dbOpinion - dbOpinionAgent));
-
-			return 1;
-		};
-
-		//-----------------------------------------------------------------------------------------
 
 
 	private:

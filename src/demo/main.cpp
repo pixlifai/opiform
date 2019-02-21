@@ -1,4 +1,6 @@
 ﻿#include <string>
+#include <iostream>
+#include <chrono>
 
 #include "Utils/Writer.h"
 
@@ -12,56 +14,60 @@ using namespace opiform;
 int main(int argc, char * argv[]) {
 	/*
 		Params:
-			- nAgents:		number of agents used
-			- tIerations:	number of iterations per repetition
-			- nRepetitions:	number of repetitons per network
-			- netType:		type of network 
-							{
-								SW (Watts-Strogatz), 
-								FC (Fully-connected), 
-								ER (Erdos–Renyi), 
-								BA (Barabasi-Albert), 
-								CM (Communities) 
-							}
+		- nAgents:		number of agents used
+		- tIerations:	number of iterations per repetition
+		- nRepetitions:	number of repetitons per network
+		- netType:		type of network
+		{
+		SW (Watts-Strogatz),
+		FC (Fully-connected),
+		ER (Erdos–Renyi),
+		BA (Barabasi-Albert),
+		CM (Communities)
+		}
 
 		Additional params:
-			1.) output folder = argv[1] or "./" if not given
-	*/
+		1.) output folder = argv[1] or "./" if not given
+		*/
 
 	if (argc == 2)
 		Utils::setFolder(argv[1]);
 
-	const int nAgents = 100;
-	const time_t tIterations = 2;
-	const int nRepetitions = 2;
+	else
+		Utils::setFolder("C:/Research/Research/FinitelyLived/Koda/docs/");
 
-	int nTreshold = 47;
-	int nEnd = 47;
+	const int nAgents = 1000;
+	const time_t tIterations = 50000;
+	const int nRepetitions = 30;
+	double dbKappa = 0.999999;		// VELIKA KAPPA JE ABSOLUTNA KONSISTENTNOST PRI LINEARNI KOMBINACIJI
 
 	Game::registerStatics();
 
-	while (nTreshold <= nEnd)	{
-		for (int nI = 0; nI < nRepetitions; ++nI) {
-			string strName = "results_" + to_string(nTreshold) + ".txt";
-			Game game(strName.c_str());
-			if (game.init((double)nTreshold/100, nAgents) == false)
-				continue;
+	auto t0 = std::chrono::system_clock::now();
 
-			NetworkAbstractParams np;
-			np.m_dbConnectionProb = 0.05;
-			np.m_dbRewiringProb = 0.05;
-			np.m_nConnectedNodes = 10;
-			np.m_nNeighbors = 10;
-			np.m_OpinionFormationModelType = OpinionFormationModel::DW;
-			NetworkType netType = NetworkType::BA;
+	for (int nI = 0; nI < nRepetitions; ++nI) {
+		string strName = "results_SB_" + to_string(nI) + ".txt";
+		Game game(strName.c_str());
+		if (game.init(nAgents) == false)
+			continue;
 
-			if (game.initNetwork(netType, &np) == false)
-				continue;
+		NetworkAbstractParams np;
+		np.m_dbConnectionProb = 0.05;
+		np.m_dbRewiringProb = 0.05;
+		np.m_nConnectedNodes = 10;
+		np.m_nNeighbors = 10;
+		np.m_OpinionFormationModelType = OpinionFormationModel::DW;
+		NetworkType netType = NetworkType::SWAge;
 
-			game.runGame(tIterations);
-		}
-		nTreshold += 1;
+		if (game.initNetwork(netType, &np) == false)
+			continue;
+
+		game.runGame(tIterations, dbKappa);
 	}
+
+	auto t1 = chrono::system_clock::now();
+	std::chrono::duration<double> diff = t1-t0;
+	std::cout << diff.count() << std::endl;
 
 	return 0;
 }

@@ -19,7 +19,9 @@ NetworkFC::NetworkFC() : NetworkAbstract() {
 NetworkFC::~NetworkFC() {}
 
 
-void NetworkFC::generateNetwork(std::vector<AgentBase *> * apvecAgents)	{
+bool NetworkFC::generateNetwork(std::vector<AgentBase *> * apvecAgents)	{
+	//Not generated because it accesses all agents
+	return true;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -29,9 +31,7 @@ bool NetworkFC::step(std::vector<AgentBase *> * apvecAgents) {
 	int nSize = apvecAgents->size();
 
 	//Iterate through agents
-	for (int nI = 0; nI < nSize; ++nI) {
-
-		AgentBase* pAgent = (*apvecAgents)[nI];
+	for (AgentBase * pAgent : *apvecAgents) {
 		AgentBase* pAgentAdjacent = nullptr;
 
 		std::uniform_int_distribution<> dis(0, apvecAgents->size()-1);
@@ -42,17 +42,28 @@ bool NetworkFC::step(std::vector<AgentBase *> * apvecAgents) {
 		if (pAgentAdjacent == nullptr)
 			continue;
 
+		//Choose a topic
+		Opinion::OpinionTopic t = Opinion::getTopic();
+
 		//Store opinions before a change
-		double dbOpinionAgent = pAgent->getOpinion();
-		double dbOpinionAdjacent = pAgentAdjacent->getOpinion();
+		Opinion::OpinionPosition opinionAgent = pAgent->getTopicPosition(t);
+		Opinion::OpinionPosition opinionAdjacent = pAgentAdjacent->getTopicPosition(t);
 
 		double dbMu = 0.2;
 
-		if (pAgent->shouldUpdate(dbOpinionAdjacent))
-			pAgent->setOpinion(dbOpinionAgent + dbMu*(dbOpinionAdjacent - dbOpinionAgent));
+		if (pAgent->shouldUpdate(t, opinionAdjacent)) {
 
-		if (pAgentAdjacent->shouldUpdate(dbOpinionAgent))
-			pAgentAdjacent->setOpinion(dbOpinionAdjacent + dbMu*(dbOpinionAgent - dbOpinionAdjacent));
+			Opinion::OpinionPosition op = opinionAgent + dbMu*(opinionAdjacent - opinionAgent);
+			pAgent->setOpinionTopicPosition(t, op);
+		}
+
+		if (pAgentAdjacent->shouldUpdate(t, opinionAgent)) {
+			Opinion::OpinionPosition op = opinionAdjacent + dbMu*(opinionAgent - opinionAdjacent);
+			pAgentAdjacent->setOpinionTopicPosition(t, op);
+		}
+
+		//Increase agent's age
+		pAgent->setAge(pAgent->getAge() + 1);
 
 	}
 

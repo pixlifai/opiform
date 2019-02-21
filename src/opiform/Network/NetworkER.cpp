@@ -18,7 +18,7 @@ NetworkER::NetworkER(const double & adbConnectionProb) : NetworkAbstract(), m_db
 NetworkER::~NetworkER() {}
 
 
-void NetworkER::generateNetwork(std::vector<AgentBase*> * apvecAgents)	{
+bool NetworkER::generateNetwork(std::vector<AgentBase*> * apvecAgents)	{
 
 	int nSize = apvecAgents->size();
 
@@ -41,6 +41,8 @@ void NetworkER::generateNetwork(std::vector<AgentBase*> * apvecAgents)	{
 			}
 		}
 	}
+
+	return true;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -50,11 +52,15 @@ bool NetworkER::step(std::vector<AgentBase *> * apvecAgents) {
 	int nSize = apvecAgents->size();
 
 	//Iterate through agents
-	for (int nI = 0; nI < nSize; ++nI) {
+	for (AgentBase * pAgent : *apvecAgents) {
 
-		AgentBase * pAgent = (*apvecAgents)[nI];
-		int nRes = (*m_OpiformModel)(pAgent);
+		//Choose a topic
+		Opinion::OpinionTopic t = Opinion::getTopic();
 
+		int nRes = (*m_OpiformModel)(pAgent, t);
+
+		//Increase agent's age
+		pAgent->setAge(pAgent->getAge() + 1);
 	}
 
 	return true;

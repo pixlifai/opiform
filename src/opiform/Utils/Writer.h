@@ -5,6 +5,8 @@
 
 #include <string>
 
+#include "Stats.h"
+
 namespace opiform {
 
 	class Utils {
@@ -17,9 +19,11 @@ namespace opiform {
 
 		static std::string getFolder();
 
-		static void writeAgents(const std::vector<class AgentBase*> & avecAgent, const std::string & astdFile, const char * apchDelim = "\t");
+		static void writeAgents(const std::vector<class AgentBase*> & avecAgent, const std::string & astrFile, const char * apchDelim = "\t");
 
-		static void writeNetwork(const std::vector<class AgentBase*> & avecAgents, const std::string & astdFile);
+		static void writeNetwork(const std::vector<class AgentBase*> & avecAgents, const std::string & astrFile);
+
+		static void writeStats(const std::vector<class Statistics> & avecStats, const std::string & astrFile);
 	};
 }
 

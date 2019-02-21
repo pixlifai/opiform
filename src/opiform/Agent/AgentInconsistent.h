@@ -12,9 +12,10 @@ namespace opiform {
 	class AgentInconsistent : public AgentBase {
 	public:
 		AgentInconsistent(
-			const DecisionMaking::DecisionMakingType & aDMType = DecisionMaking::DecisionMakingType::LinearSpread,
-			const double & adbOpinion = 0.0,
-			const double & adbTreshold = 0.0);
+			unsigned int anAge,
+			const double& adbMu = 0.2,
+			const Opinion::mapOpinionTopicPosition & amapBelieves = Opinion::mapOpinionTopicPosition(),
+			const DecisionMaking::DecisionMakingType & aDMType = DecisionMaking::DecisionMakingType::LinearSpread);
 		AgentInconsistent(const AgentInconsistent & rhs);
 
 		virtual ~AgentInconsistent();
@@ -22,8 +23,7 @@ namespace opiform {
 
 		virtual double getOpinion() const;
 
-		virtual void setThreshold(const double &);
-		virtual bool shouldUpdate(const double & adbOpinionAdjacent);
+		virtual bool shouldUpdate(const Opinion::OpinionTopic & aTopic, const Opinion::OpinionPosition & aOpinionAdjacent);
 	};
 }
 

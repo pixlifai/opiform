@@ -18,7 +18,7 @@ namespace opiform {
 
 		virtual NetworkType getNetworkType() const { return NetworkType::BA; };
 
-		virtual void generateNetwork(std::vector<AgentBase*> * apvecAgents);
+		virtual bool generateNetwork(std::vector<AgentBase*> * apvecAgents);
 
 		virtual bool step(std::vector<AgentBase *> * apvecAgents);
 

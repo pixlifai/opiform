@@ -8,17 +8,25 @@ namespace opiform {
 	class AgentStubborn : public AgentBase {
 	public:
 		AgentStubborn(
-			const DecisionMaking::DecisionMakingType & aDMType = DecisionMaking::DecisionMakingType::LinearSpread, 
-			const double & adbOpinion = 0.0);
+			unsigned int anAge,
+			const Opinion::mapOpinionTopicPosition & amapBelieves = Opinion::mapOpinionTopicPosition(),
+			const DecisionMaking::DecisionMakingType & aDMType = DecisionMaking::DecisionMakingType::LinearSpread);
 		AgentStubborn(const AgentStubborn & rhs);
 
 		virtual ~AgentStubborn();
 		AgentStubborn & operator=(const AgentStubborn & rhs);
 
-		virtual void setThreshold(const double & ) { }
-		virtual bool shouldUpdate(const double & adbOpinionAdjacent);
+		virtual void updateAdjAgentProfile(const AgentBase * apAgent, const Opinion::OpinionTopic & aTopic, const Opinion::OpinionPosition & aOpinionAdjacent) {
+			/*Do nothing*/
+		};
 
-		virtual double getOpinion() const { return m_dbOpinion; }
+		virtual AgentBase * selectInteractingAgent(const Opinion::OpinionTopic & aTopic) {
+			return nullptr;
+		}
+
+		virtual bool shouldUpdate(const Opinion::OpinionTopic & aTopic, const Opinion::OpinionPosition & aOpinionAdjacent) {
+			return false;
+		};
 	};
 }
 

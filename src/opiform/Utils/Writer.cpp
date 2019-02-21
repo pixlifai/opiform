@@ -4,6 +4,7 @@
 #include <map>
 
 #include "../Agent/AgentBase.h"
+#include "Stats.h"
 
 #include "Writer.h"
 
@@ -20,28 +21,23 @@ std::string Utils::getFolder() {
 	return s_strFolder;
 }
 
-void Utils::writeAgents(const std::vector<AgentBase*> & aT, const string & astdFile, const char * apchDelim) {
+void Utils::writeAgents(const std::vector<AgentBase*> & aT, const string & astrFile, const char * apchDelim) {
 	std::ofstream out;
-	out.open(astdFile, std::ios_base::app);
+	out.open(astrFile, std::ios_base::app);
 
-	for (int nI = 0; nI < aT.size(); ++nI) {
-		const AgentBase * pAgent = aT[nI];
-		if (pAgent->getType() != AgentType::Stubborn) {
-			int nIndy = -1;
-		}
-
-		out << pAgent->getOpinion() << "\t";
-
-	}
+	for (auto & a : aT) {
+		auto * ap = a->getBelieves();
+		out << ap->cbegin()->second << '\t';
+	}	
 	out << endl;
 	out.close();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void Utils::writeNetwork(const std::vector<AgentBase*> & avecAgents, const string & astdFile) {
+void Utils::writeNetwork(const std::vector<AgentBase*> & avecAgents, const string & astrFile) {
 	std::ofstream out;
-	out.open(astdFile);
+	out.open(astrFile);
 
 	out << "Agent and agent's connections\n";
 	for (int nI = 0; nI < avecAgents.size(); ++nI) {
@@ -77,4 +73,24 @@ void Utils::writeNetwork(const std::vector<AgentBase*> & avecAgents, const strin
 
 	out.close();
 
+}
+
+//------------------------------------------------------------------------------------
+
+void Utils::writeStats(const std::vector<Statistics> & avecStats, const std::string & astrFile) {
+	ofstream out;
+	out.open(astrFile, std::ios_base::app);
+
+	if (out.is_open()) {
+
+		int nI = 0;
+		for (const Statistics & el : avecStats) {
+			out
+				<< nI++ << '\t'				//opinion topic ID
+				<< el.m_dbMean << '\t'		//mean
+				<< el.m_dbVar << '\n';		//variance
+		}
+	}
+
+	out.close();
 }

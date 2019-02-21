@@ -23,7 +23,7 @@ NetworkCM::~NetworkCM() {
 
 //-------------------------------------------------------------------------------------
 
-void NetworkCM::generateNetwork(vector<AgentBase *> * apvecAgents)	{
+bool NetworkCM::generateNetwork(vector<AgentBase *> * apvecAgents)	{
 
 	int nSize = apvecAgents->size();
 
@@ -82,6 +82,8 @@ void NetworkCM::generateNetwork(vector<AgentBase *> * apvecAgents)	{
 
 	pA0->addAdjacentAgent(pA1);
 	pA1->addAdjacentAgent(pA0);
+
+	return true;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -91,11 +93,15 @@ bool NetworkCM::step(std::vector<AgentBase *> * apvecAgents) {
 	int nSize = apvecAgents->size();
 
 	//Iterate through agents
-	for (int nI = 0; nI < nSize; ++nI) {
+	for (AgentBase * pAgent : *apvecAgents) {
 
-		AgentBase * pAgent = (*apvecAgents)[nI];
-		int nRes = (*m_OpiformModel)(pAgent);
+		//Choose a topic
+		Opinion::OpinionTopic t = Opinion::getTopic();
 
+		int nRes = (*m_OpiformModel)(pAgent, t);
+
+		//Increase agent's age
+		pAgent->setAge(pAgent->getAge() + 1);
 	}
 
 	return true;

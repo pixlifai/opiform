@@ -12,13 +12,14 @@ namespace opiform {
 
 		virtual NetworkType getNetworkType() const { return NetworkType::SW; };
 
-		virtual void generateNetwork(std::vector<AgentBase *> * apvecAgents);
+		virtual bool generateNetwork(std::vector<AgentBase *> * apvecAgents);
 		virtual bool step(std::vector<AgentBase *> * apvecAgents);
 		virtual bool isConnected(const std::vector<AgentBase*> * apvecAgents) { return true; };
 
+	protected:
+		bool generateRegularLattice(std::vector<AgentBase *> * apvecAgents);
 
-	private:
-		void networkRewiring(std::vector<AgentBase *> * apvecAgents, const double & adbProb);
+		virtual void networkRewiring(std::vector<AgentBase *> * apvecAgents, const double & adbProb);
 		int m_nNeighbors;
 		double m_dbRewiringProb;
 	};

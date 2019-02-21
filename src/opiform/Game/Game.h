@@ -2,29 +2,33 @@
 #define GAME_H
 
 #include <vector>
-#include <memory>
+#include <string>
+#include <queue>
 
 namespace opiform {
 
-	enum NetworkType;
-
 	class Game	{
 	private:
-		std::vector <AgentBase * > m_vecAgents;
-		const char * m_pchFile;
-		std::unique_ptr< NetworkAbstract > m_pNet;
+		std::vector <class AgentBase * > m_vecAgents;
+		std::string m_strFileName;
 
 	public:
-		Game(const char * apchFileName);
+		Game(const std::string & astrFileName);
 		~Game();
 
-		bool init(const double & adbThresholdLevel, int anSize = 200);
+		bool init(int anSize = 200);
 		bool initNetwork(const NetworkType & aNetworkType, struct NetworkAbstractParams * apNetworkParams = 0);
-		void runGame(const time_t & aTime = 100000);
+		void runGame(const time_t & aTime, const double & adbKappa);
 
 		static void registerStatics();
 
 		int getAgents() const;
+
+	private:
+		void initAgents(int anSize);
+		std::queue<int> listDeceased();
+
+		void updateRanking();
 	};
 }
 
